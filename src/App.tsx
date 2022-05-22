@@ -81,7 +81,7 @@ function App() {
     upperYearBuilt: null
   });
 
-  const { loading, data } = useQuery(SEARCH_HOMES_QUERY, {
+  const { loading, error, data } = useQuery(SEARCH_HOMES_QUERY, {
     variables: {
       criteria: {
         homeTypes: homeTypeFilter.length === 0 ? null : homeTypeFilter,
@@ -117,7 +117,17 @@ function App() {
           <Filters onChangeCommitted={setFinalFilterObject} />
         </Grid>
         {loading && <Loading />}
-        {data?.listHomes && !loading && (
+        {error && (
+          <Grid container item xs={12} spacing={3}>
+            <Typography variant="h5">Error!</Typography>
+          </Grid>
+        )}
+        {data?.listHomes?.items?.length === 0 && !loading && (
+          <Grid container item xs={12} spacing={3}>
+            <Typography variant="h5">Nothing found!</Typography>
+          </Grid>
+        )}
+        {data?.listHomes?.items?.length > 0 && !loading && (
           <Grid container item xs={12} spacing={3}>
             {data.listHomes.items.map((item: any) => {
               return (
