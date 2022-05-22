@@ -4,6 +4,7 @@ import { Grid, Typography, Slider } from '@mui/material';
 interface Props {
   value: [number | null, number | null];
   onChange: (e: any) => void;
+  onChangeCommitted: (e: any) => void;
   title: string;
   min?: number;
   max?: number;
@@ -12,6 +13,7 @@ interface Props {
 const FilterSlider: React.FC<Props> = ({
   value,
   onChange,
+  onChangeCommitted,
   title,
   min = 0,
   max = 100
@@ -36,6 +38,7 @@ const FilterSlider: React.FC<Props> = ({
             value[0] === null ? min : value[0],
             value[1] === null ? max : value[1]
           ]}
+          onChangeCommitted={onChangeCommitted}
           onChange={onChange}
           valueLabelDisplay="auto"
         />
