@@ -38,7 +38,7 @@ const SearchItem: React.FC<Props> = ({ data }) => {
             'https://via.placeholder.com/285x142'
           }
           style={{ maxWidth: '100%', aspectRatio: '285 / 142' }}
-          alt="home"
+          alt={data.officialPresentation?.pictures?.[0]?.description ?? 'home'}
         />
       </Grid>
       <Grid container item xs={12} sx={{ p: 2 }}>
