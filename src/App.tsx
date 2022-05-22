@@ -6,6 +6,7 @@ import { Container, Grid } from '@mui/material';
 import './App.css';
 
 import { useQuery, gql } from '@apollo/client';
+import HomeTypes, { HomeType } from 'components/HomeTypes';
 
 const SEARCH_HOMES_QUERY = gql`
   query SearchHomes(
@@ -83,6 +84,8 @@ function App() {
     null
   ]);
 
+  const [homeTypeFilter, setHomeTypeFilter] = useState<HomeType[]>([]);
+
   const [yearOfConstructionValues, setYearOfConstructionValues] = useState<
     [number | null, number | null]
   >([null, null]);
@@ -129,7 +132,7 @@ function App() {
   const { loading, error, data } = useQuery(SEARCH_HOMES_QUERY, {
     variables: {
       criteria: {
-        homeTypes: null,
+        homeTypes: homeTypeFilter.length === 0 ? null : homeTypeFilter,
         address: null,
         bounds: null,
         saleStatus: 'ACTIVE',
@@ -149,6 +152,9 @@ function App() {
       <Grid container>
         <Grid item xs={12}>
           top
+        </Grid>
+        <Grid item xs={12}>
+          <HomeTypes onChange={setHomeTypeFilter} />
         </Grid>
         <Grid container item xs={12} spacing={5}>
           <Grid item xs={12} md={6}>
