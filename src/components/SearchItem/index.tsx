@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Grid, Typography } from '@mui/material';
 
 interface Props {
@@ -12,7 +11,7 @@ function formatDescription(str: string) {
 }
 
 function formatPrice(num: number) {
-  var re = '\\d(?=(\\d{' + 3 + '})+' + '$' + ')';
+  var re = `\\d(?=(\\d{3})+$)`;
   return num.toFixed(0).replace(new RegExp(re, 'g'), '$&,');
 }
 
@@ -34,13 +33,12 @@ const SearchItem: React.FC<Props> = ({ data }) => {
     >
       <Grid item xs={12}>
         <img
-          // src="https://via.placeholder.com/285x142"
           src={
             data.officialPresentation?.pictures?.[0]?.url ??
             'https://via.placeholder.com/285x142'
           }
           style={{ maxWidth: '100%', aspectRatio: '285 / 142' }}
-          alt="image"
+          alt="home"
         />
       </Grid>
       <Grid container item xs={12} sx={{ p: 2 }}>

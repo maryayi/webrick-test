@@ -1,12 +1,13 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import SearchItem from 'components/SearchItem';
-import FilterSlider from 'components/FilterSlider';
 import Loading from 'components/Loading';
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, Typography } from '@mui/material';
 import './App.css';
 
 import { useQuery, gql } from '@apollo/client';
 import HomeTypes, { HomeType } from 'components/HomeTypes';
+import SearchBox from 'components/SearchBox';
+import Filters from 'components/Filters';
 
 const SEARCH_HOMES_QUERY = gql`
   query SearchHomes(
@@ -61,34 +62,9 @@ const SEARCH_HOMES_QUERY = gql`
 `;
 
 function App() {
-  const [priceValues, setPriceValues] = useState<
-    [number | null, number | null]
-  >([null, null]);
-
-  const [sizeValues, setSizeValues] = useState<[number | null, number | null]>([
-    null,
-    null
-  ]);
-
-  const [baseSizeValues, setBaseSizeValues] = useState<
-    [number | null, number | null]
-  >([null, null]);
-
-  const [planValues, setPlanValues] = useState<[number | null, number | null]>([
-    null,
-    null
-  ]);
-
-  const [roomValues, setRoomValues] = useState<[number | null, number | null]>([
-    null,
-    null
-  ]);
-
   const [homeTypeFilter, setHomeTypeFilter] = useState<HomeType[]>([]);
 
-  const [yearOfConstructionValues, setYearOfConstructionValues] = useState<
-    [number | null, number | null]
-  >([null, null]);
+  const [homeSearchPhrase, setHomeSearchPhrase] = useState<string>('');
 
   const [finalFilterObject, setFinalFilterObject] = useState<any>({
     lowerPrice: null,
@@ -105,35 +81,11 @@ function App() {
     upperYearBuilt: null
   });
 
-  const commitFilters = useCallback(() => {
-    setFinalFilterObject({
-      lowerPrice: priceValues[0],
-      upperPrice: priceValues[1],
-      lowerHomeSize: sizeValues[0],
-      upperHomeSize: sizeValues[1],
-      lowerLotSize: baseSizeValues[0],
-      upperLotSize: baseSizeValues[1],
-      lowerNumberOfFloors: planValues[0],
-      upperNumberOfFloors: planValues[1],
-      lowerNumberOfRooms: roomValues[0],
-      upperNumberOfRooms: roomValues[1],
-      lowerYearBuilt: yearOfConstructionValues[0],
-      upperYearBuilt: yearOfConstructionValues[1]
-    });
-  }, [
-    priceValues,
-    sizeValues,
-    baseSizeValues,
-    planValues,
-    roomValues,
-    yearOfConstructionValues
-  ]);
-
-  const { loading, error, data } = useQuery(SEARCH_HOMES_QUERY, {
+  const { loading, data } = useQuery(SEARCH_HOMES_QUERY, {
     variables: {
       criteria: {
         homeTypes: homeTypeFilter.length === 0 ? null : homeTypeFilter,
-        address: null,
+        address: !!homeSearchPhrase ? homeSearchPhrase : null,
         bounds: null,
         saleStatus: 'ACTIVE',
         ...finalFilterObject
@@ -149,86 +101,20 @@ function App() {
 
   return (
     <Container maxWidth="md">
-      <Grid container>
+      <Grid container spacing={3}>
         <Grid item xs={12}>
-          top
+          <Typography variant="h3" color="darkblue">
+            WeBrick test (by Mahdi Aryayi)
+          </Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <SearchBox handleSearch={setHomeSearchPhrase} />
         </Grid>
         <Grid item xs={12}>
           <HomeTypes onChange={setHomeTypeFilter} />
         </Grid>
-        <Grid container item xs={12} spacing={5}>
-          <Grid item xs={12} md={6}>
-            <FilterSlider
-              title="Price"
-              min={0}
-              max={10000000}
-              value={priceValues}
-              onChangeCommitted={commitFilters}
-              onChange={(e: any) => {
-                setPriceValues(e.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FilterSlider
-              title="Size"
-              min={0}
-              max={300}
-              value={sizeValues}
-              onChangeCommitted={commitFilters}
-              onChange={(e: any) => {
-                setSizeValues(e.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FilterSlider
-              title="Base size"
-              min={0}
-              max={5000}
-              value={baseSizeValues}
-              onChangeCommitted={commitFilters}
-              onChange={(e: any) => {
-                setBaseSizeValues(e.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FilterSlider
-              title="Plan"
-              min={0}
-              max={3}
-              value={planValues}
-              onChangeCommitted={commitFilters}
-              onChange={(e: any) => {
-                setPlanValues(e.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FilterSlider
-              title="Room"
-              min={0}
-              max={5}
-              value={roomValues}
-              onChangeCommitted={commitFilters}
-              onChange={(e: any) => {
-                setRoomValues(e.target.value);
-              }}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <FilterSlider
-              title="Year of construction"
-              min={1800}
-              max={2030}
-              value={yearOfConstructionValues}
-              onChangeCommitted={commitFilters}
-              onChange={(e: any) => {
-                setYearOfConstructionValues(e.target.value);
-              }}
-            />
-          </Grid>
+        <Grid item xs={12}>
+          <Filters onChangeCommitted={setFinalFilterObject} />
         </Grid>
         {loading && <Loading />}
         {data?.listHomes && !loading && (

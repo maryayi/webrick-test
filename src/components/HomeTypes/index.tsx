@@ -34,12 +34,13 @@ const HomeTypes = ({ onChange }: Props) => {
 
   useEffect(() => {
     onChange(Array.from(homeType));
-  }, [homeType]);
+  }, [homeType, onChange]);
 
   return (
     <Grid container spacing={1}>
       <Grid item>
         <Button
+          size="small"
           onClick={() => setHomeType(new Set([]))}
           variant={homeType.size === 0 ? 'contained' : 'outlined'}
         >
@@ -48,6 +49,7 @@ const HomeTypes = ({ onChange }: Props) => {
       </Grid>
       <Grid item>
         <Button
+          size="small"
           onClick={() => handleChange('ONEFAMILY')}
           variant={homeType.has('ONEFAMILY') ? 'contained' : 'outlined'}
         >
@@ -56,6 +58,7 @@ const HomeTypes = ({ onChange }: Props) => {
       </Grid>
       <Grid item>
         <Button
+          size="small"
           onClick={() => handleChange('MULTIFAMILY')}
           variant={homeType.has('MULTIFAMILY') ? 'contained' : 'outlined'}
         >
@@ -64,6 +67,7 @@ const HomeTypes = ({ onChange }: Props) => {
       </Grid>
       <Grid item>
         <Button
+          size="small"
           onClick={() => handleChange('APARTMENT')}
           variant={homeType.has('APARTMENT') ? 'contained' : 'outlined'}
         >
@@ -72,6 +76,7 @@ const HomeTypes = ({ onChange }: Props) => {
       </Grid>
       <Grid item>
         <Button
+          size="small"
           onClick={() => handleChange('ROW')}
           variant={homeType.has('ROW') ? 'contained' : 'outlined'}
         >
@@ -80,6 +85,7 @@ const HomeTypes = ({ onChange }: Props) => {
       </Grid>
       <Grid item>
         <Button
+          size="small"
           onClick={() => handleChange('FARMHOUSE')}
           variant={homeType.has('FARMHOUSE') ? 'contained' : 'outlined'}
         >
@@ -88,6 +94,7 @@ const HomeTypes = ({ onChange }: Props) => {
       </Grid>
       <Grid item>
         <Button
+          size="small"
           onClick={() => handleChange('OTHER')}
           variant={homeType.has('OTHER') ? 'contained' : 'outlined'}
         >

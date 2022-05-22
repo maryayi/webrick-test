@@ -1,4 +1,3 @@
-import { useState, useCallback } from 'react';
 import { Grid, Typography, Slider } from '@mui/material';
 
 interface Props {
@@ -18,10 +17,6 @@ const FilterSlider: React.FC<Props> = ({
   min = 0,
   max = 100
 }) => {
-  const [sliderValue, setSliderValue] = useState<[number, number]>([0, 100]);
-  const handleChange = useCallback((e: any) => {
-    setSliderValue(e.target.value);
-  }, []);
   return (
     <Grid container justifyContent="space-between">
       <Grid item xs={4}>
